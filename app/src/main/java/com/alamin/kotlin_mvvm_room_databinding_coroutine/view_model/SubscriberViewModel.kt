@@ -2,6 +2,7 @@ package com.alamin.kotlin_mvvm_room_databinding_coroutine.view_model
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.alamin.kotlin_mvvm_room_databinding_coroutine.data.LocalDatabase
@@ -27,7 +28,6 @@ class SubscriberViewModel(application: Application): AndroidViewModel(applicatio
         repository = SubscriberRepository(subscriberDao);
         saveOrUpdateButtonText.value = "Save";
         clearAllOrDeleteButtonText.value = "Clear All"
-
     }
 
     fun saveOrUpdate(){
@@ -41,6 +41,10 @@ class SubscriberViewModel(application: Application): AndroidViewModel(applicatio
         viewModelScope.launch(Dispatchers.IO) {
             repository.insert(modelSubscriber);
         }
+    }
+
+    fun getAllSubscribers(): LiveData<List<ModelSubscriber>>{
+        return repository.subscribers;
     }
 
 }
